@@ -7,10 +7,10 @@ import {
   Text,
   View,
   ActionButton,
-  ListItem,
+  // ListItem,
 } from "react-native";
 import { TextInput } from "react-native-gesture-handler";
-import { getFoods, signout } from "../api/FoodsApi";
+import { addFood, getFoods } from "../api/FoodsApi";
 import { ListItem, Divider } from "react-native-elements";
 // import ActionButton from "react-native-action-button";
 
@@ -28,6 +28,8 @@ class FoodList extends Component {
   //   };
   // };
 
+  colors = ["red", "black", "yellow", "orange", "blue"];
+
   state = {
     foodList: [],
     selectedIndex: 0,
@@ -35,11 +37,11 @@ class FoodList extends Component {
   };
 
   onFoodAdded = (food) => {
-    // this.setState((prevState) => ({
-    //   foodList: [...prevState.foodList, food],
-    // }));
+    this.setState((prevState) => ({
+      foodList: [...prevState.foodList, food],
+    }));
     // this.props.navigation.popToTop();
-    console.log("food");
+    console.log("bit bugg", this.state.foodList);
   };
 
   onFoodDeleted = () => {
@@ -54,6 +56,7 @@ class FoodList extends Component {
   };
 
   onFoodsReceived = (foodList) => {
+    console.log("on foods received");
     this.setState((prevState) => ({
       foodList: (prevState.foodList = foodList),
     }));
@@ -88,7 +91,21 @@ class FoodList extends Component {
               }))
             }
           />
-          <Button title="Submit" style={styles.button} onPress={() => {}} />
+          <Button
+            title="Submit"
+            style={styles.button}
+            onPress={() =>
+              addFood(
+                {
+                  name: this.state.currentFoodItem,
+                  color: this.colors[
+                    Math.floor(Math.random() * this.colors.length)
+                  ],
+                },
+                this.onFoodAdded
+              )
+            }
+          />
         </View>
         <FlatList
           data={this.state.foodList}
