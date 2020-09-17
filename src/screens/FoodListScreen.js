@@ -44,11 +44,11 @@ class FoodList extends Component {
   };
 
   onFoodsReceived = (foodList) => {
-    // console.log("on foods received", foodList);
+    console.log("on foods received", foodList);
     this.setState((prevState) => ({
       foodList: (prevState.foodList = foodList),
     }));
-    console.log(this.state.foodList, "state foodlist");
+    // console.log(this.state.foodList, "state foodlist");
   };
 
   componentDidMount() {
@@ -78,8 +78,8 @@ class FoodList extends Component {
           renderItem={({ item }) => {
             return (
               <ListItem
-                title={item.Name}
-                subtitle={item.Category}
+                title={item.name}
+                subtitle={item.category}
                 onPress={() => {
                   this.props.navigation.navigate("FoodDetail", { food: item });
                 }}

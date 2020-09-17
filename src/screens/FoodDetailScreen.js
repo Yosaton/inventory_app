@@ -13,6 +13,8 @@ class FoodDetailScreen extends Component {
   render() {
     const food = this.props.navigation.getParam("food");
 
+    console.log("ur mom's a bitch", food);
+
     const onFoodDeleted = this.props.navigation.getParam("foodDeletedCallback");
 
     console.log(food);
@@ -58,6 +60,11 @@ class FoodDetailScreen extends Component {
         />
         <Text style={styles.headerText}>{food.name}</Text>
         <Text style={styles.categoryText}>Category: {food.category}</Text>
+        <Text style={styles.categoryText}>
+          Price Bought: {food.boughtPrice}
+        </Text>
+        <Text style={styles.categoryText}>Sell Price: {food.sellPrice}</Text>
+        <Text style={styles.categoryText}>Location: {food.location}</Text>
 
         <Text style={styles.ingredientText}>Ingredients</Text>
         {food.subIngredients === undefined ||

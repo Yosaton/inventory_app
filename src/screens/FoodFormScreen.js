@@ -4,19 +4,33 @@ export default class FoodFormScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     console.log(navigation);
     return {
-      title: "New Food",
+      title: navigation.getParam("food") ? "Edit Food" : "New Food",
     };
   };
 
   state = {
     food: {
-      name: null,
-      category: null,
-      sellPrice: null,
-      location: null,
+      name: "",
+      category: "",
+      boughtPrice: "",
+      sellPrice: "",
+      location: "",
       subIngredients: [],
     },
     currentSubIngredient: null,
+  };
+
+  componentDidMount() {
+    const currentFood = this.props.navigation.getParam("food");
+    console.log(currentFood, "nutsonyachin");
+    if (currentFood) {
+      this.setState((prevState) => ({ food: (prevState.food = currentFood) }));
+    }
+  }
+
+  onFoodUpdated = (food) => {
+    console.log(food, "foooooooooooooood");
+    this.props.navigation.popToTop();
   };
 
   // setFoodName = (text) => {
@@ -51,7 +65,7 @@ export default class FoodFormScreen extends Component {
 
   setCurrentSubIngredient = (text) => {
     this.setState((prevState) => ({
-      currentSubIngredient: (prevState.currentSubIngredient = text),
+      currentSubIngredient: (prevState.food.currentSubIngredient = text),
     }));
   };
 
@@ -60,7 +74,24 @@ export default class FoodFormScreen extends Component {
 
     if (ingredient && ingredient.length > 2) {
       this.setState((prevState) => ({
-        subIngredients: [...prevState.subIngredients, ingredient],
+        food: {
+          ...prevState.food,
+          subIngredients: [...prevState.food.subIngredients, ingredient],
+        },
+      }));
+      console.log(this.state.subIngredients, "batman hoohoho");
+    }
+  };
+
+  submitSubIngredients = () => {
+    let ingredient = this.state.currentSubIngredient;
+
+    if (ingredient && ingredient.length > 2) {
+      this.setState((prevState) => ({
+        food: {
+          ...prevState.food,
+          subIngredients: [...prevState.food.subIngredients, ingredient],
+        },
       }));
     }
   };
@@ -72,11 +103,12 @@ export default class FoodFormScreen extends Component {
         // setCategory={this.setCategory}
         // setBoughtPrice={this.setBoughtPrice}
         // setSellPrice={this.setSellPrice}
+        // ingredientArray={this.state.subIngredients}
         setSubIngredients={this.setCurrentSubIngredient}
         submitSubIngredients={this.submitSubIngredients}
-        ingredientArray={this.state.subIngredients}
         food={this.state.food}
         onFoodAdded={this.props.navigation.state.params}
+        onFoodUpdated={this.onFoodUpdated}
       />
     );
   }
