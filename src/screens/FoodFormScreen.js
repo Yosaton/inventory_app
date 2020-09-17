@@ -1,61 +1,83 @@
-// import React, { Component } from 'react';
-// import FoodForm from '../ui/FoodForm';
+import React, { Component } from "react";
+import FoodForm from "../ui/FoodForm";
+export default class FoodFormScreen extends Component {
+  static navigationOptions = ({ navigation }) => {
+    console.log(navigation);
+    return {
+      title: "New Food",
+    };
+  };
 
-// export default class FoodFormScreen extends Component {
+  state = {
+    food: {
+      name: null,
+      category: null,
+      sellPrice: null,
+      location: null,
+      subIngredients: [],
+    },
+    currentSubIngredient: null,
+  };
 
-//   static navigationOptions = ({ navigation }) => {
-//     return {
-//       title: navigation.getParam('food') ? 'Edit Food' : 'New Food'
-//     }
-//   };
+  // setFoodName = (text) => {
+  //   this.setState((prevState) => ({
+  //     foodName: (prevState.foodName = text),
+  //   }));
+  // };
 
-//   state = {
-//     food: {
-//       name: '',
-//       category: '',
-//       subIngredients: []
-//     },
-//     currentSubIngredient: null,
-//   }
+  // setCategory = (text) => {
+  //   this.setState((prevState) => ({
+  //     category: (prevState.category = text),
+  //   }));
+  // };
 
-//   componentDidMount() {
-//     const currentFood = this.props.navigation.getParam('food');
+  // setBoughtPrice = (text) => {
+  //   this.setState((prevState) => ({
+  //     boughtPrice: (prevState.boughtPrice = text),
+  //   }));
+  // };
 
-//     if (currentFood) {
-//       this.setState(prevState => ({ food: prevState.food = currentFood }))
-//     }
-//   }
+  // setSellPrice = (text) => {
+  //   this.setState((prevState) => ({
+  //     sellPrice: (prevState.sellPrice = text),
+  //   }));
+  // };
 
-//   onFoodUpdated = (food) => {
-//     console.log(food);
-//     this.props.navigation.popToTop();
-//   }
+  // setLocation = (text) => {
+  //   this.setState((prevState) => ({
+  //     location: (prevState.location = text),
+  //   }));
+  // };
 
-//   setCurrentSubIngredient = (text) => {
-//     this.setState(prevState => ({
-//       currentSubIngredient: prevState.currentSubIngredient = text
-//     }));
-//   }
+  setCurrentSubIngredient = (text) => {
+    this.setState((prevState) => ({
+      currentSubIngredient: (prevState.currentSubIngredient = text),
+    }));
+  };
 
-//   submitSubIngredients = () => {
-//     let ingredient = this.state.currentSubIngredient;
+  submitSubIngredients = () => {
+    let ingredient = this.state.currentSubIngredient;
 
-//     if (ingredient && ingredient.length > 2) {
-//       this.setState(prevState => ({
-//         food: { ...prevState.food, subIngredients: [...prevState.food.subIngredients, ingredient] },
-//       }))
-//     }
-//   }
+    if (ingredient && ingredient.length > 2) {
+      this.setState((prevState) => ({
+        subIngredients: [...prevState.subIngredients, ingredient],
+      }));
+    }
+  };
 
-//   render() {
-//     return (
-//       <FoodForm
-//         setSubIngredients={this.setCurrentSubIngredient}
-//         submitSubIngredients={this.submitSubIngredients}
-//         food={this.state.food}
-//         onFoodAdded={this.props.navigation.getParam('foodAddedCallback')}
-//         onFoodUpdated={this.onFoodUpdated}
-//       />
-//     );
-//   }
-// }
+  render() {
+    return (
+      <FoodForm
+        // setFoodName={this.setFoodName}
+        // setCategory={this.setCategory}
+        // setBoughtPrice={this.setBoughtPrice}
+        // setSellPrice={this.setSellPrice}
+        setSubIngredients={this.setCurrentSubIngredient}
+        submitSubIngredients={this.submitSubIngredients}
+        ingredientArray={this.state.subIngredients}
+        food={this.state.food}
+        onFoodAdded={this.props.navigation.state.params}
+      />
+    );
+  }
+}

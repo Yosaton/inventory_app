@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { View, Text, FlatList, StyleSheet, Alert, Image } from "react-native";
-// import { Divider, Icon } from 'react-native-elements';
+import { Divider, Icon } from "react-native-elements";
 import { deleteFood } from "../api/FoodsApi";
 
 class FoodDetailScreen extends Component {

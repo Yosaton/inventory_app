@@ -1,18 +1,8 @@
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  Button,
-  FlatList,
-  SafeAreaView,
-  Text,
-  View,
-  ActionButton,
-  // ListItem,
-} from "react-native";
-import { TextInput } from "react-native-gesture-handler";
-import { addFood, getFoods } from "../api/FoodsApi";
+import { StyleSheet, FlatList, SafeAreaView } from "react-native";
+import { getFoods } from "../api/FoodsApi";
 import { ListItem, Divider } from "react-native-elements";
-// import ActionButton from "react-native-action-button";
+import ActionButton from "react-native-action-button";
 
 class FoodList extends Component {
   // static navigationOptions = ({ navigation }) => {
@@ -28,8 +18,6 @@ class FoodList extends Component {
   //   };
   // };
 
-  colors = ["red", "black", "yellow", "orange", "blue"];
-
   state = {
     foodList: [],
     selectedIndex: 0,
@@ -40,7 +28,7 @@ class FoodList extends Component {
     this.setState((prevState) => ({
       foodList: [...prevState.foodList, food],
     }));
-    // this.props.navigation.popToTop();
+    this.props.navigation.popToTop();
     console.log("bit bugg", this.state.foodList);
   };
 
@@ -56,57 +44,31 @@ class FoodList extends Component {
   };
 
   onFoodsReceived = (foodList) => {
-    console.log("on foods received");
+    // console.log("on foods received", foodList);
     this.setState((prevState) => ({
       foodList: (prevState.foodList = foodList),
     }));
+    console.log(this.state.foodList, "state foodlist");
   };
 
   componentDidMount() {
     getFoods(this.onFoodsReceived);
   }
 
-  // showActionButton = () => (
-  //   <ActionButton
-  //     buttonColor="blue"
-  //     onPress={() =>
-  //       this.props.navigation.navigate("FoodForm", {
-  //         foodAddedCallback: this.onFoodAdded,
-  //       })
-  //     }
-  //   />
-  // );
+  showActionButton = () => (
+    <ActionButton
+      buttonColor="blue"
+      onPress={() =>
+        this.props.navigation.navigate("FoodForm", {
+          foodAddedCallback: this.onFoodAdded,
+        })
+      }
+    />
+  );
 
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.row}>
-          <TextInput
-            style={styles.input}
-            placeholder="Add Food"
-            value={this.state.currentFoodItem}
-            onChangeText={(text) =>
-              this.setState((prevState) => ({
-                currentFoodItem: (prevState.currentFoodItem = text),
-              }))
-            }
-          />
-          <Button
-            title="Submit"
-            style={styles.button}
-            onPress={() =>
-              addFood(
-                {
-                  name: this.state.currentFoodItem,
-                  color: this.colors[
-                    Math.floor(Math.random() * this.colors.length)
-                  ],
-                },
-                this.onFoodAdded
-              )
-            }
-          />
-        </View>
         <FlatList
           data={this.state.foodList}
           ItemSeparatorComponent={() => (
@@ -114,15 +76,22 @@ class FoodList extends Component {
           )}
           keyExtractor={(item, index) => index.toString()}
           renderItem={({ item }) => {
-            console.log(item, "jenkkkkk");
             return (
               <ListItem
-                title={item.name}
-                subtitle={item.color}
-                onPress={() => {}}
+                title={item.Name}
+                subtitle={item.Category}
+                onPress={() => {
+                  this.props.navigation.navigate("FoodDetail", { food: item });
+                }}
               />
             );
           }}
+        />
+        <ActionButton
+          buttonColor="blue"
+          onPress={() =>
+            this.props.navigation.navigate("FoodForm", this.onFoodAdded)
+          }
         />
       </SafeAreaView>
     );
@@ -132,29 +101,6 @@ class FoodList extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  listItem: {
-    marginTop: 8,
-    marginBottom: 8,
-  },
-  textContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  titleStyle: {
-    fontSize: 30,
-  },
-  subtitleStyle: {
-    fontSize: 18,
-  },
-  emptyTitle: {
-    fontSize: 32,
-    marginBottom: 16,
-  },
-  emptySubtitle: {
-    fontSize: 18,
-    fontStyle: "italic",
   },
 });
 

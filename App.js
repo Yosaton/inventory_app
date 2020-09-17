@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
 import ApiKeys from "./constants/ApiKeys";
 import FoodListScreen from "./src/screens/FoodListScreen";
-// import FoodFormScreen from "./src/screens/FoodFormScreen";
+import FoodFormScreen from "./src/screens/FoodFormScreen";
 import FoodDetailScreen from "./src/screens/FoodDetailScreen";
 import * as firebase from "firebase";
 import { createSwitchNavigator, createAppContainer } from "react-navigation";
@@ -75,7 +75,7 @@ const navigator = createStackNavigator(
   {
     FoodList: FoodListScreen,
     FoodDetail: FoodDetailScreen,
-    // FoodForm: FoodFormScreen,
+    FoodForm: FoodFormScreen,
   },
   {
     initialRouteName: "FoodList",

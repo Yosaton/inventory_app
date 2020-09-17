@@ -2,18 +2,14 @@ import * as firebase from "firebase";
 import "firebase/firestore";
 
 export function addFood(food, addComplete) {
-  firebase
-    .firestore()
-    .collection("Foods")
-    .add({
-      name: food.name,
-      color: food.color,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-    })
-    .then((snapshot) => snapshot.get())
-    // .then((foodData) => addComplete(foodData())
-    .then((data) => addComplete(foodData.data()))
-    .catch((err) => console.log(error));
+  (food.createdAt = firebase.firestore.FieldValue.serverTimestamp()),
+    firebase
+      .firestore()
+      .collection("Foods")
+      .add(food)
+      .then((snapshot) => snapshot.get())
+      .then((foodData) => addComplete(foodData.data()))
+      .catch((err) => console.log("error"));
 }
 
 export async function getFoods(foodsReceived) {
