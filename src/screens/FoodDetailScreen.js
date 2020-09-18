@@ -1,5 +1,13 @@
 import React, { Component } from "react";
-import { View, Text, FlatList, StyleSheet, Alert, Image } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  Alert,
+  Image,
+  ScrollView,
+} from "react-native";
 import { Divider, Icon } from "react-native-elements";
 import { deleteFood } from "../api/FoodsApi";
 
@@ -54,10 +62,12 @@ class FoodDetailScreen extends Component {
             }
           />
         </View>
+        {/* <ScrollView showsHorizontalScrollIndicator={false}> */}
         <Image
           style={styles.image}
           source={food.image && { uri: food.image }}
         />
+
         <Text style={styles.headerText}>{food.name}</Text>
         <Text style={styles.categoryText}>Category: {food.category}</Text>
         <Text style={styles.categoryText}>
@@ -84,6 +94,7 @@ class FoodDetailScreen extends Component {
             )}
           />
         )}
+        {/* </ScrollView> */}
       </View>
     );
   }
