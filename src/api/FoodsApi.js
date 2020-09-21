@@ -1,17 +1,6 @@
 import * as firebase from "firebase";
 import "firebase/firestore";
-
-export function addFood(food, addComplete) {
-  console.log(food, "bahahahahahahahHAHAHAHAHAH");
-  food.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-  firebase
-    .firestore()
-    .collection("Foods")
-    .add(food)
-    .then((snapshot) => snapshot.get())
-    .then((foodData) => addComplete(foodData.data()))
-    .catch((err) => console.log("error"));
-}
+import { v4 as uuidv4 } from "uuid";
 
 export function updateFood(food, updateComplete) {
   food.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
@@ -50,4 +39,106 @@ export async function getFoods(foodsReceived) {
   });
   // console.log(foodList, "yesss food");
   foodsReceived(foodList);
+}
+
+export function uploadFood(food, onFoodUploaded, { updating }) {
+  if (food.imageUri) {
+    const fileExtension = food.imageUri.split(".").pop();
+    console.log(fileExtension, "file extensionnnnnnnnnnnnnnnnn");
+    var uuid = require("random-uuid-v4");
+    var uuidv4 = uuid();
+    const fileName = `${uuidv4}.${fileExtension}`;
+    console.log(food, "IM AM DA FOOOOOOOOOOOOOODS");
+
+    var storageRef = firebase.storage().ref(`foods/images/${fileName}`);
+    console.log(storageRef, "storageRefFFFFFFFFFFFFFFFFFF");
+    // storageRef.putFile(food.imageUri).on(
+    //   firebase.storage.TaskEvent.STATE_CHANGED,
+    //   (snapshot) => {
+    //     console.log("snapshot:" + snapshot.state);
+    //     console.log(
+    //       "progress:" + (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+    //     );
+    //     if (snapshot.state === firebase.storage.TaskState.SUCCESS) {
+    //       console.log("SUCCESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
+    //     }
+    //   },
+    //   (error) => {
+    //     unsubscribe();
+    //     console.log("image upload error " + error.toString());
+    //   },
+    //   () => {
+    //     storageRef.getDownloadURL().then((downloadUrl) => {
+    //       console.log("File available at:" + downloadUrl);
+
+    //       if (updating) {
+    //         console.log("updating...");
+    //         updateFood(food, onFoodUploaded);
+    //       } else {
+    //         console.log("adding...");
+    //         addFood(food, onFoodUploaded);
+    //       }
+    //     });
+    //   }
+    // );
+    storageRef.put(food.imageUri).on(
+      firebase.storage.TaskEvent.STATE_CHANGED,
+      (snapshot) => {
+        console.log("snapshot: " + snapshot.state);
+        console.log(
+          "progress: " + (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+
+        if (snapshot.state === firebase.storage.TaskState.SUCCESS) {
+          console.log("Success");
+        }
+      },
+      (error) => {
+        unsubscribe();
+        console.log("image upload error: " + error.toString());
+      },
+      () => {
+        storageRef.getDownloadURL().then((downloadUrl) => {
+          console.log("File available at: " + downloadUrl);
+
+          food.image = downloadUrl;
+
+          delete food.imageUri;
+
+          if (updating) {
+            console.log("Updating....");
+            updateFood(food, onFoodUploaded);
+          } else {
+            console.log("adding...");
+            addFood(food, onFoodUploaded);
+          }
+        });
+      }
+    );
+  } else {
+    // delete food.imageUri;
+    console.log("skipping image unloaded");
+    if (updating) {
+      console.log("updating...");
+      updateFood(food, onFoodUploaded);
+    } else {
+      console.log("adding...");
+      addFood(food, onFoodUploaded);
+    }
+  }
+}
+
+export function addFood(food, addComplete) {
+  console.log(food, "bahahahahahahahHAHAHAHAHAH");
+  food.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+  firebase
+    .firestore()
+    .collection("Foods")
+    .add(food)
+    .then((snapshot) => {
+      food.id = snapshot.id;
+      snapshot.set(food);
+    })
+    .then(() => addComplete(food))
+    .catch((err) => console.log("error"));
 }

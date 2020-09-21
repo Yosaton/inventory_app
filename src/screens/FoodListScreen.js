@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, FlatList, SafeAreaView } from "react-native";
+import { StyleSheet, FlatList, SafeAreaView, View, Text } from "react-native";
 import { getFoods } from "../api/FoodsApi";
 import { ListItem, Divider } from "react-native-elements";
 import ActionButton from "react-native-action-button";
@@ -68,7 +68,7 @@ class FoodList extends Component {
   );
 
   render() {
-    return (
+    return this.state.foodList.length > 0 ? (
       <SafeAreaView style={styles.container}>
         <FlatList
           data={this.state.foodList}
@@ -101,6 +101,14 @@ class FoodList extends Component {
           }
         />
       </SafeAreaView>
+    ) : (
+      <View style={styles.textContainer}>
+        <Text style={styles.emptyTitle}>No Foods found</Text>
+        <Text style={styles.emptySubtitle}>
+          Add a new food using the + button below
+        </Text>
+        {this.showActionButton()}
+      </View>
     );
   }
 }
@@ -108,6 +116,29 @@ class FoodList extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  listItem: {
+    marginTop: 8,
+    marginBottom: 8,
+  },
+  textContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  titleStyle: {
+    fontSize: 30,
+  },
+  subtitleStyle: {
+    fontSize: 18,
+  },
+  emptyTitle: {
+    fontSize: 32,
+    marginBottom: 16,
+  },
+  emptySubtitle: {
+    fontSize: 18,
+    fontStyle: "italic",
   },
 });
 

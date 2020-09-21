@@ -10,12 +10,21 @@ import {
 import GridList from "../ui/GridList";
 import { withFormik } from "formik";
 import * as yup from "yup";
-import { addFood, updateFood } from "../api/FoodsApi";
+import { addFood, updateFood, uploadFood } from "../api/FoodsApi";
+import CurryImagePicker from "../ui/CurryImagePicker";
 
 const FoodForm = (props) => {
+  setFoodImage = (image) => {
+    props.setFieldValue("imageUri", image.uri);
+    console.log(image.uri, "IMAGEEEEEEEEEEEEEEEEEEEEEEE");
+  };
   return (
-    <View style={styles.container}>
-      <ScrollView showsHorizontalScrollIndicator={false}>
+    <ScrollView showsHorizontalScrollIndicator={false}>
+      <View style={styles.container}>
+        <CurryImagePicker
+          image={props.food.image}
+          onImagePicked={setFoodImage}
+        />
         <TextInput
           value={props.values.name}
           style={styles.longFormInput}
@@ -75,8 +84,8 @@ const FoodForm = (props) => {
         </View>
         <GridList items={props.food.subIngredients} />
         <Button title="Submit" onPress={() => props.handleSubmit()} />
-      </ScrollView>
-    </View>
+      </View>
+    </ScrollView>
   );
 };
 
@@ -121,6 +130,7 @@ export default withFormik({
     boughtPrice: food.boughtPrice,
     sellPrice: food.sellPrice,
     location: food.location,
+    imageUri: null,
   }),
   enableReinitialize: true,
   // validationSchema: (props) =>
@@ -142,9 +152,15 @@ export default withFormik({
     if (props.food.id) {
       values.id = props.food.id;
       values.createdAt = props.food.createdAt;
-      updateFood(values, props.onFoodUpdated);
+      values.image = props.food.image;
+      // if (values.image) {
+      // }
+      uploadFood(values, props.onFoodUpdated, { updating: true });
+
+      // updateFood(values, props.onFoodUpdated);
     } else {
-      addFood(values, props.onFoodAdded);
+      // addFood(values, props.onFoodAdded);
+      uploadFood(values, props.onFoodAdded, { updating: false });
     }
   },
 })(FoodForm);
