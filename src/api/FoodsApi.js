@@ -48,10 +48,28 @@ export function uploadFood(food, onFoodUploaded, { updating }) {
     var uuid = require("random-uuid-v4");
     var uuidv4 = uuid();
     const fileName = `${uuidv4}.${fileExtension}`;
-    console.log(food, "IM AM DA FOOOOOOOOOOOOOODS");
+    console.log(food.imageUri, "IM AM DA FOOOOOOOOOOOOOODS");
 
     var storageRef = firebase.storage().ref(`foods/images/${fileName}`);
     console.log(storageRef, "storageRefFFFFFFFFFFFFFFFFFF");
+
+    // const response = await fetch(food.imageUri);
+
+    fetch(food.imageUri)
+      .then(function (response) {
+        return response.blob();
+      })
+      .then(function (blob) {
+        var uploadTask = storageRef.put(blob);
+        // here the image is a blob
+      });
+
+    // var blob = new Blob(response, { type: "image/jpg" });
+
+    // console.log(blob, "blobbb");
+
+    // var storageRef = firebase.storage().ref("images");
+
     // storageRef.putFile(food.imageUri).on(
     //   firebase.storage.TaskEvent.STATE_CHANGED,
     //   (snapshot) => {
@@ -81,40 +99,40 @@ export function uploadFood(food, onFoodUploaded, { updating }) {
     //     });
     //   }
     // );
-    storageRef.put(food.imageUri).on(
-      firebase.storage.TaskEvent.STATE_CHANGED,
-      (snapshot) => {
-        console.log("snapshot: " + snapshot.state);
-        console.log(
-          "progress: " + (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
+    // storageRef.put(food.imageUri).on(
+    //   firebase.storage.TaskEvent.STATE_CHANGED,
+    //   (snapshot) => {
+    //     console.log("snapshot: " + snapshot.state);
+    //     console.log(
+    //       "progress: " + (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+    //     );
 
-        if (snapshot.state === firebase.storage.TaskState.SUCCESS) {
-          console.log("Success");
-        }
-      },
-      (error) => {
-        unsubscribe();
-        console.log("image upload error: " + error.toString());
-      },
-      () => {
-        storageRef.getDownloadURL().then((downloadUrl) => {
-          console.log("File available at: " + downloadUrl);
+    //     if (snapshot.state === firebase.storage.TaskState.SUCCESS) {
+    //       console.log("Success");
+    //     }
+    //   },
+    //   (error) => {
+    //     unsubscribe();
+    //     console.log("image upload error: " + error.toString());
+    //   },
+    //   () => {
+    //     storageRef.getDownloadURL().then((downloadUrl) => {
+    //       console.log("File available at: " + downloadUrl);
 
-          food.image = downloadUrl;
+    //       food.image = downloadUrl;
 
-          delete food.imageUri;
+    //       delete food.imageUri;
 
-          if (updating) {
-            console.log("Updating....");
-            updateFood(food, onFoodUploaded);
-          } else {
-            console.log("adding...");
-            addFood(food, onFoodUploaded);
-          }
-        });
-      }
-    );
+    //       if (updating) {
+    //         console.log("Updating....");
+    //         updateFood(food, onFoodUploaded);
+    //       } else {
+    //         console.log("adding...");
+    //         addFood(food, onFoodUploaded);
+    //       }
+    //     });
+    //   }
+    // );
   } else {
     // delete food.imageUri;
     console.log("skipping image unloaded");

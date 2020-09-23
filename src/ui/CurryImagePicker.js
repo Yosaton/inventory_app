@@ -13,22 +13,7 @@ const CurryImagePicker = ({ image, onImagePicked }) => {
     }
   }, [image]);
 
-  pickImageHandler = () => {
-    // ImagePicker.showImagePicker(
-    //   { title: "Pick an Image", maxWidth: 800, maxHeight: 600 },
-    //   (response) => {
-    //     if (response.error) {
-    //       console.log("image error");
-    //     } else {
-    //       console.log("Image: " + response.uri);
-    setSelectedImage({ uri: response.uri });
-    //       onImagePicked({ uri: response.uri });
-    //     }
-    //   }
-    // );
-  };
-
-  pickImage = async () => {
+  var pickImage = async () => {
     try {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -37,7 +22,13 @@ const CurryImagePicker = ({ image, onImagePicked }) => {
         quality: 1,
       });
       if (!result.cancelled) {
-        // this.setState({ image: result.uri });
+        // uploadImage(result.uri, "test-image")
+        //   .then(() => {
+        //     Alert.alert("Success");
+        //   })
+        //   .catch((error) => {
+        //     Alert.alert("Failure");
+        //   });
         setSelectedImage({ uri: result.uri });
         onImagePicked({ uri: result.uri });
       }
