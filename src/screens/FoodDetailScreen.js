@@ -14,7 +14,10 @@ import { deleteFood } from "../api/FoodsApi";
 class FoodDetailScreen extends Component {
   static navigationOptions = () => {
     return {
+      // headerTitleStyle: { alignSelf: "center" },
+      // {headerLayoutPreset: 'center'};
       title: "Food Details",
+      headerTitleAlign: "center",
     };
   };
 
@@ -27,75 +30,76 @@ class FoodDetailScreen extends Component {
 
     console.log(food);
     return (
-      <View style={styles.container}>
-        <View style={styles.row}>
-          <Icon
-            reverse
-            name="ios-create"
-            type="ionicon"
-            onPress={() =>
-              this.props.navigation.navigate("FoodForm", {
-                food: food,
-              })
-            }
-          />
-          <Icon
-            reverse
-            name="ios-trash"
-            type="ionicon"
-            color="#CA300E"
-            onPress={() =>
-              Alert.alert(
-                "Delete?",
-                "Cannot be undone",
-                [
-                  { text: "Cancel" },
-                  {
-                    text: "OK",
-                    onPress: () => {
-                      deleteFood(food, onFoodDeleted);
+      <ScrollView showsHorizontalScrollIndicator={false}>
+        <View style={styles.container}>
+          <View style={styles.row}>
+            <Icon
+              reverse
+              name="ios-create"
+              type="ionicon"
+              onPress={() =>
+                this.props.navigation.navigate("FoodForm", {
+                  food: food,
+                })
+              }
+            />
+            <Icon
+              reverse
+              name="ios-trash"
+              type="ionicon"
+              color="#CA300E"
+              onPress={() =>
+                Alert.alert(
+                  "Delete?",
+                  "Cannot be undone",
+                  [
+                    { text: "Cancel" },
+                    {
+                      text: "OK",
+                      onPress: () => {
+                        deleteFood(food, onFoodDeleted);
+                      },
                     },
-                  },
-                ],
-                { cancelable: false }
-              )
-            }
+                  ],
+                  { cancelable: false }
+                )
+              }
+            />
+          </View>
+          {/* <ScrollView showsHorizontalScrollIndicator={false}> */}
+          <Image
+            style={styles.image}
+            source={food.image && { uri: food.image }}
           />
+
+          <Text style={styles.headerText}>{food.name}</Text>
+          <Text style={styles.categoryText}>Category: {food.category}</Text>
+          <Text style={styles.categoryText}>
+            Price Bought: {food.boughtPrice}
+          </Text>
+          <Text style={styles.categoryText}>Sell Price: {food.sellPrice}</Text>
+          <Text style={styles.categoryText}>Location: {food.location}</Text>
+
+          <Text style={styles.ingredientText}>Ingredients</Text>
+          {food.subIngredients === undefined ||
+          food.subIngredients.length == 0 ? (
+            <Text>None</Text>
+          ) : (
+            <FlatList
+              data={food.subIngredients}
+              contentContainerStyle={styles.listContainer}
+              ItemSeparatorComponent={() => (
+                <Divider style={{ backgroundColor: "black" }} />
+              )}
+              scrollEnabled={false}
+              keyExtractor={(item, index) => index.toString()}
+              renderItem={({ item }) => (
+                <Text style={styles.ingredientItemText}>{item}</Text>
+              )}
+            />
+          )}
         </View>
-        {/* <ScrollView showsHorizontalScrollIndicator={false}> */}
-        <Image
-          style={styles.image}
-          source={food.image && { uri: food.image }}
-        />
-
-        <Text style={styles.headerText}>{food.name}</Text>
-        <Text style={styles.categoryText}>Category: {food.category}</Text>
-        <Text style={styles.categoryText}>
-          Price Bought: {food.boughtPrice}
-        </Text>
-        <Text style={styles.categoryText}>Sell Price: {food.sellPrice}</Text>
-        <Text style={styles.categoryText}>Location: {food.location}</Text>
-
-        <Text style={styles.ingredientText}>Ingredients</Text>
-        {food.subIngredients === undefined ||
-        food.subIngredients.length == 0 ? (
-          <Text>None</Text>
-        ) : (
-          <FlatList
-            data={food.subIngredients}
-            contentContainerStyle={styles.listContainer}
-            ItemSeparatorComponent={() => (
-              <Divider style={{ backgroundColor: "black" }} />
-            )}
-            scrollEnabled={false}
-            keyExtractor={(item, index) => index.toString()}
-            renderItem={({ item }) => (
-              <Text style={styles.ingredientItemText}>{item}</Text>
-            )}
-          />
-        )}
-        {/* </ScrollView> */}
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -136,6 +140,7 @@ const styles = StyleSheet.create({
   },
   container: {
     alignItems: "center",
+    marginBottom: 32,
   },
   listContainer: {
     borderWidth: 0.5,

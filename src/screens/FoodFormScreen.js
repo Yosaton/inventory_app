@@ -5,6 +5,7 @@ export default class FoodFormScreen extends Component {
     console.log(navigation);
     return {
       title: navigation.getParam("food") ? "Edit Food" : "New Food",
+      headerTitleAlign: "center",
     };
   };
 
@@ -32,36 +33,6 @@ export default class FoodFormScreen extends Component {
     console.log(food, "foooooooooooooood");
     this.props.navigation.popToTop();
   };
-
-  // setFoodName = (text) => {
-  //   this.setState((prevState) => ({
-  //     foodName: (prevState.foodName = text),
-  //   }));
-  // };
-
-  // setCategory = (text) => {
-  //   this.setState((prevState) => ({
-  //     category: (prevState.category = text),
-  //   }));
-  // };
-
-  // setBoughtPrice = (text) => {
-  //   this.setState((prevState) => ({
-  //     boughtPrice: (prevState.boughtPrice = text),
-  //   }));
-  // };
-
-  // setSellPrice = (text) => {
-  //   this.setState((prevState) => ({
-  //     sellPrice: (prevState.sellPrice = text),
-  //   }));
-  // };
-
-  // setLocation = (text) => {
-  //   this.setState((prevState) => ({
-  //     location: (prevState.location = text),
-  //   }));
-  // };
 
   setCurrentSubIngredient = (text) => {
     this.setState((prevState) => ({
@@ -99,11 +70,6 @@ export default class FoodFormScreen extends Component {
   render() {
     return (
       <FoodForm
-        // setFoodName={this.setFoodName}
-        // setCategory={this.setCategory}
-        // setBoughtPrice={this.setBoughtPrice}
-        // setSellPrice={this.setSellPrice}
-        // ingredientArray={this.state.subIngredients}
         setSubIngredients={this.setCurrentSubIngredient}
         submitSubIngredients={this.submitSubIngredients}
         food={this.state.food}

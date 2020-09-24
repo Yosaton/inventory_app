@@ -4,6 +4,7 @@ import { StyleSheet, Text, FlatList } from "react-native";
 const GridList = (props) => {
   return (
     <>
+      <Text style={styles.ingredients}>Ingredients</Text>
       <FlatList
         contentContainerStyle={styles.grid}
         numColumns={3}
@@ -14,7 +15,6 @@ const GridList = (props) => {
           return <Text style={styles.item}>{item}</Text>;
         }}
       />
-      <Text>Ingredients</Text>
     </>
   );
 };
@@ -26,11 +26,15 @@ var styles = StyleSheet.create({
     width: 90,
     padding: 8,
     color: "white",
+    textAlign: "center",
   },
   grid: {
     marginBottom: 32,
     marginTop: 16,
     alignItems: "center",
+  },
+  ingredients: {
+    marginBottom: 32,
   },
 });
 

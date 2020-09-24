@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Button, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
 const CurryImagePicker = ({ image, onImagePicked }) => {
@@ -36,8 +36,10 @@ const CurryImagePicker = ({ image, onImagePicked }) => {
       <View style={styles.imageContainer}>
         <Image source={selectedImage} style={styles.previewImage} />
       </View>
-      <View styels={styles.button}>
-        <Button title="Pick an image" onPress={pickImage} />
+      <View>
+        <TouchableOpacity style={styles.button} onPress={pickImage}>
+          <Text style={styles.appButtonText}>Choose Image</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -54,13 +56,26 @@ const styles = StyleSheet.create({
     backgroundColor: "#eee",
     width: "80%",
     height: 150,
-  },
-  button: {
-    margin: 8,
+    marginBottom: 15,
   },
   previewImage: {
     width: "100%",
     height: "100%",
+  },
+  button: {
+    elevation: 8,
+    backgroundColor: "#0000FF",
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    margin: 8,
+  },
+  appButtonText: {
+    fontSize: 18,
+    color: "#fff",
+    fontWeight: "bold",
+    alignSelf: "center",
+    textTransform: "uppercase",
   },
 });
 

@@ -5,19 +5,6 @@ import { ListItem, Divider } from "react-native-elements";
 import ActionButton from "react-native-action-button";
 
 class FoodList extends Component {
-  // static navigationOptions = ({ navigation }) => {
-  //   onSignedOut = () => {
-  //     navigation.navigate("Auth");
-  //   };
-
-  //   return {
-  //     title: "Food List",
-  //     headerRight: (
-  //       <Button title="log out" onPress={() => signout(onSignedOut)} />
-  //     ),
-  //   };
-  // };
-
   state = {
     foodList: [],
     selectedIndex: 0,
@@ -49,7 +36,6 @@ class FoodList extends Component {
     this.setState((prevState) => ({
       foodList: (prevState.foodList = foodList),
     }));
-    // console.log(this.state.foodList, "state foodlist");
   };
 
   componentDidMount() {
@@ -79,8 +65,10 @@ class FoodList extends Component {
           renderItem={({ item, index }) => {
             return (
               <ListItem
+                // containerStyle={styles.listItem}
                 title={item.name}
                 subtitle={item.category}
+                subtitle={item.location}
                 leftAvatar={{
                   size: "large",
                   rounded: false,

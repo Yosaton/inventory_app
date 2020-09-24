@@ -6,6 +6,7 @@ import {
   Text,
   Button,
   ScrollView,
+  TouchableOpacity,
 } from "react-native";
 import GridList from "../ui/GridList";
 import { withFormik } from "formik";
@@ -75,16 +76,22 @@ const FoodForm = (props) => {
             }}
             placeholder="Sub-ingredient"
           />
-          <Button
+          <TouchableOpacity
             style={styles.button}
-            title="Add"
             onPress={() => {
               props.submitSubIngredients();
             }}
-          />
+          >
+            <Text style={styles.appButtonText}>Add</Text>
+          </TouchableOpacity>
         </View>
-        <GridList items={props.food.subIngredients} />
-        <Button title="Submit" onPress={() => props.handleSubmit()} />
+        <GridList style={styles.gridlist} items={props.food.subIngredients} />
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => props.handleSubmit()}
+        >
+          <Text style={styles.appButtonText}>Submit</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -103,6 +110,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     alignItems: "center",
     marginTop: 32,
+    marginBottom: 64,
   },
   formInput: {
     borderColor: "#B5B4BC",
@@ -121,8 +129,21 @@ const styles = StyleSheet.create({
     padding: 8,
     margin: 16,
   },
+  button: {
+    elevation: 8,
+    backgroundColor: "#0000FF",
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+  },
+  appButtonText: {
+    fontSize: 18,
+    color: "#fff",
+    fontWeight: "bold",
+    alignSelf: "center",
+    textTransform: "uppercase",
+  },
 });
-// console.log("sdad")
 
 export default withFormik({
   mapPropsToValues: ({ food }) => ({
@@ -154,13 +175,8 @@ export default withFormik({
         values.image = props.food.image;
       }
       uploadFood(values, props.onFoodUpdated, { updating: true });
-
-      // updateFood(values, props.onFoodUpdated);
     } else {
-      // addFood(values, props.onFoodAdded);
       uploadFood(values, props.onFoodAdded, { updating: false });
     }
   },
 })(FoodForm);
-
-// export default FoodForm;
