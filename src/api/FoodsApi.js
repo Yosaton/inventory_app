@@ -11,7 +11,7 @@ export function updateFood(food, updateComplete) {
     .doc(food.id)
     .set(food)
     .then(() => updateComplete(food))
-    .catch((err) => console.log("error"));
+    .catch((error) => console.log("error"));
 }
 
 export function deleteFood(food, deleteComplete) {
@@ -53,89 +53,82 @@ export function uploadFood(food, onFoodUploaded, { updating }) {
     var storageRef = firebase.storage().ref(`foods/images/${fileName}`);
     console.log(storageRef, "storageRefFFFFFFFFFFFFFFFFFF");
 
-    // const response = await fetch(food.imageUri);
-
     fetch(food.imageUri)
       .then(function (response) {
         return response.blob();
       })
       .then(function (blob) {
         var uploadTask = storageRef.put(blob);
-        // here the image is a blob
+        uploadTask.on(
+          "state_changed",
+          (snapshot) => {
+            const progress = Math.round(
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+            );
+
+            console.log(progress, "this is the progress");
+          },
+          (error) => {
+            console.log(error, "errorrrrrrrr");
+          },
+          () => {
+            // firebase
+            //   .storage()
+            //   .ref(`foods/images`)
+            //   .child(fileName)
+            //   .getDownloadedURL()
+            //   .then((url) => {
+            //     console.log(url, "this is the url download");
+            //   });
+
+            // food.image = url;
+            // delete food.imageUri;
+
+            // if (updating) {
+            //   console.log("Updating....");
+            //   updateFood(food, onFoodUploaded);
+            // } else {
+            //   console.log("adding...");
+            //   addFood(food, onFoodUploaded);
+            // }
+            // storageRef.getDownloadURL().then((downloadUrl) => {
+            //   console.log("File available at: " + downloadUrl);
+
+            //   food.image = downloadUrl;
+
+            //   delete food.imageUri;
+
+            //   if (updating) {
+            //     console.log("Updating....");
+            //     updateFood(food, onFoodUploaded);
+            //   } else {
+            //     console.log("adding...");
+            //     addFood(food, onFoodUploaded);
+            //   }
+            // });
+
+            storageRef.getDownloadURL().then((downloadUrl) => {
+              console.log("File available at: " + downloadUrl);
+
+              food.image = downloadUrl;
+
+              delete food.imageUri;
+
+              if (updating) {
+                console.log("Updating....");
+                updateFood(food, onFoodUploaded);
+              } else {
+                console.log("adding...");
+                addFood(food, onFoodUploaded);
+              }
+            });
+          }
+        );
       });
-
-    // var blob = new Blob(response, { type: "image/jpg" });
-
-    // console.log(blob, "blobbb");
-
-    // var storageRef = firebase.storage().ref("images");
-
-    // storageRef.putFile(food.imageUri).on(
-    //   firebase.storage.TaskEvent.STATE_CHANGED,
-    //   (snapshot) => {
-    //     console.log("snapshot:" + snapshot.state);
-    //     console.log(
-    //       "progress:" + (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-    //     );
-    //     if (snapshot.state === firebase.storage.TaskState.SUCCESS) {
-    //       console.log("SUCCESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
-    //     }
-    //   },
-    //   (error) => {
-    //     unsubscribe();
-    //     console.log("image upload error " + error.toString());
-    //   },
-    //   () => {
-    //     storageRef.getDownloadURL().then((downloadUrl) => {
-    //       console.log("File available at:" + downloadUrl);
-
-    //       if (updating) {
-    //         console.log("updating...");
-    //         updateFood(food, onFoodUploaded);
-    //       } else {
-    //         console.log("adding...");
-    //         addFood(food, onFoodUploaded);
-    //       }
-    //     });
-    //   }
-    // );
-    // storageRef.put(food.imageUri).on(
-    //   firebase.storage.TaskEvent.STATE_CHANGED,
-    //   (snapshot) => {
-    //     console.log("snapshot: " + snapshot.state);
-    //     console.log(
-    //       "progress: " + (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-    //     );
-
-    //     if (snapshot.state === firebase.storage.TaskState.SUCCESS) {
-    //       console.log("Success");
-    //     }
-    //   },
-    //   (error) => {
-    //     unsubscribe();
-    //     console.log("image upload error: " + error.toString());
-    //   },
-    //   () => {
-    //     storageRef.getDownloadURL().then((downloadUrl) => {
-    //       console.log("File available at: " + downloadUrl);
-
-    //       food.image = downloadUrl;
-
-    //       delete food.imageUri;
-
-    //       if (updating) {
-    //         console.log("Updating....");
-    //         updateFood(food, onFoodUploaded);
-    //       } else {
-    //         console.log("adding...");
-    //         addFood(food, onFoodUploaded);
-    //       }
-    //     });
-    //   }
-    // );
   } else {
     // delete food.imageUri;
-    console.log("skipping image unloaded");
+    console.log("skipping image uploaded");
+    console.log(updating, "updatinggggggggggggggggg");
     if (updating) {
       console.log("updating...");
       updateFood(food, onFoodUploaded);

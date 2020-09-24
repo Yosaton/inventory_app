@@ -9,14 +9,15 @@ import {
 } from "react-native";
 import GridList from "../ui/GridList";
 import { withFormik } from "formik";
-import * as yup from "yup";
 import { addFood, updateFood, uploadFood } from "../api/FoodsApi";
 import CurryImagePicker from "../ui/CurryImagePicker";
 
 const FoodForm = (props) => {
   setFoodImage = (image) => {
+    console.log(image, "IMAGEEEEEEEEEEEEEEEEEEEEEEE");
+    console.log(props, "props-asshole");
+
     props.setFieldValue("imageUri", image.uri);
-    console.log(image.uri, "IMAGEEEEEEEEEEEEEEEEEEEEEEE");
   };
   return (
     <ScrollView showsHorizontalScrollIndicator={false}>
@@ -133,11 +134,6 @@ export default withFormik({
     imageUri: null,
   }),
   enableReinitialize: true,
-  // validationSchema: (props) =>
-  //   yup.object().shape({
-  //     name: yup.string().max(30).required(),
-  //     category: yup.string().max(15).required(),
-  //   }),
   handleSubmit: (values, { props }) => {
     console.log(
       props,
@@ -149,12 +145,14 @@ export default withFormik({
       "VALSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS"
     );
 
+    console.log(props.food.id, "gizmo");
+
     if (props.food.id) {
       values.id = props.food.id;
       values.createdAt = props.food.createdAt;
-      values.image = props.food.image;
-      // if (values.image) {
-      // }
+      if (props.food.image) {
+        values.image = props.food.image;
+      }
       uploadFood(values, props.onFoodUpdated, { updating: true });
 
       // updateFood(values, props.onFoodUpdated);

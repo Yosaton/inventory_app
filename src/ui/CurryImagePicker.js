@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { View, Button, Image, StyleSheet } from "react-native";
-// import ImagePicker from "react-native-image-picker";
 import * as ImagePicker from "expo-image-picker";
 
 const CurryImagePicker = ({ image, onImagePicked }) => {
@@ -22,13 +21,6 @@ const CurryImagePicker = ({ image, onImagePicked }) => {
         quality: 1,
       });
       if (!result.cancelled) {
-        // uploadImage(result.uri, "test-image")
-        //   .then(() => {
-        //     Alert.alert("Success");
-        //   })
-        //   .catch((error) => {
-        //     Alert.alert("Failure");
-        //   });
         setSelectedImage({ uri: result.uri });
         onImagePicked({ uri: result.uri });
       }

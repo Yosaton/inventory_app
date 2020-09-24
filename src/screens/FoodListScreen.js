@@ -81,6 +81,11 @@ class FoodList extends Component {
               <ListItem
                 title={item.name}
                 subtitle={item.category}
+                leftAvatar={{
+                  size: "large",
+                  rounded: false,
+                  source: item.image && { uri: item.image },
+                }}
                 onPress={() => {
                   this.setState((prevState) => ({
                     selectedIndex: (prevState.selectedIndex = index),
