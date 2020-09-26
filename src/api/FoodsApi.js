@@ -37,7 +37,6 @@ export async function getFoods(foodsReceived) {
     foodItem.id = doc.id;
     foodList.push(foodItem);
   });
-  // console.log(foodList, "yesss food");
   foodsReceived(foodList);
 }
 
@@ -72,46 +71,9 @@ export function uploadFood(food, onFoodUploaded, { updating }) {
             console.log(error, "errorrrrrrrr");
           },
           () => {
-            // firebase
-            //   .storage()
-            //   .ref(`foods/images`)
-            //   .child(fileName)
-            //   .getDownloadedURL()
-            //   .then((url) => {
-            //     console.log(url, "this is the url download");
-            //   });
-
-            // food.image = url;
-            // delete food.imageUri;
-
-            // if (updating) {
-            //   console.log("Updating....");
-            //   updateFood(food, onFoodUploaded);
-            // } else {
-            //   console.log("adding...");
-            //   addFood(food, onFoodUploaded);
-            // }
-            // storageRef.getDownloadURL().then((downloadUrl) => {
-            //   console.log("File available at: " + downloadUrl);
-
-            //   food.image = downloadUrl;
-
-            //   delete food.imageUri;
-
-            //   if (updating) {
-            //     console.log("Updating....");
-            //     updateFood(food, onFoodUploaded);
-            //   } else {
-            //     console.log("adding...");
-            //     addFood(food, onFoodUploaded);
-            //   }
-            // });
-
             storageRef.getDownloadURL().then((downloadUrl) => {
               console.log("File available at: " + downloadUrl);
-
               food.image = downloadUrl;
-
               delete food.imageUri;
 
               if (updating) {

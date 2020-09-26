@@ -1,12 +1,12 @@
-import React, { Component } from "react";
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
   TextInput,
   Text,
-  Button,
   ScrollView,
   TouchableOpacity,
+  TouchableHighlight,
 } from "react-native";
 import GridList from "../ui/GridList";
 import { withFormik } from "formik";
@@ -14,12 +14,28 @@ import { addFood, updateFood, uploadFood } from "../api/FoodsApi";
 import CurryImagePicker from "../ui/CurryImagePicker";
 
 const FoodForm = (props) => {
+  console.log(props, "props in ur ass");
   setFoodImage = (image) => {
     console.log(image, "IMAGEEEEEEEEEEEEEEEEEEEEEEE");
     console.log(props, "props-asshole");
-
     props.setFieldValue("imageUri", image.uri);
   };
+
+  const [selectedLocation, setSelectedLocation] = useState(null);
+
+  useEffect(() => {
+    if (props.values.location) {
+      console.log("useEffectnutsack " + props.values.location);
+      setSelectedLocation(props.values.location);
+    }
+  }, [props.values.location]);
+
+  function selectionOnPress(location) {
+    console.log(location);
+    setSelectedLocation(location);
+    console.log(selectedLocation, "selectedLocation");
+  }
+
   return (
     <ScrollView showsHorizontalScrollIndicator={false}>
       <View style={styles.container}>
@@ -43,6 +59,45 @@ const FoodForm = (props) => {
             props.setFieldValue("category", text);
           }}
         />
+      </View>
+
+      <View style={styles.locationContainer}>
+        <View style={styles.locationRow}>
+          <TouchableHighlight
+            style={[
+              styles.locationButtonNormal,
+              {
+                backgroundColor:
+                  selectedLocation === "Princeton" ? "green" : "gray",
+              },
+            ]}
+            onPress={() => {
+              selectionOnPress("Princeton"),
+                props.setFieldValue("location", "Princeton");
+            }}
+          >
+            <Text style={styles.appButtonText}>Princeton</Text>
+          </TouchableHighlight>
+
+          <TouchableHighlight
+            style={[
+              styles.locationButtonNormal,
+              {
+                backgroundColor:
+                  selectedLocation === "Henderson" ? "green" : "gray",
+              },
+            ]}
+            onPress={() => {
+              selectionOnPress("Henderson"),
+                props.setFieldValue("location", "Henderson");
+            }}
+          >
+            <Text style={styles.appButtonText}>Henderson</Text>
+          </TouchableHighlight>
+        </View>
+      </View>
+
+      <View style={styles.container2}>
         <TextInput
           value={props.values.boughtPrice}
           style={styles.longFormInput}
@@ -59,14 +114,7 @@ const FoodForm = (props) => {
             props.setFieldValue("sellPrice", text);
           }}
         />
-        <TextInput
-          value={props.values.location}
-          style={styles.longFormInput}
-          placeholder="Location"
-          onChangeText={(text) => {
-            props.setFieldValue("location", text);
-          }}
-        />
+
         <View style={styles.row}>
           <TextInput
             value={props.values.subIngredients}
@@ -110,6 +158,11 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     alignItems: "center",
     marginTop: 32,
+  },
+  container2: {
+    width: 300,
+    alignSelf: "center",
+    alignItems: "center",
     marginBottom: 64,
   },
   formInput: {
@@ -142,6 +195,30 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     alignSelf: "center",
     textTransform: "uppercase",
+  },
+  locationContainer: {
+    width: 300,
+    alignSelf: "center",
+  },
+  locationRow: {
+    width: "100%",
+    alignSelf: "stretch",
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  locationButtonNormal: {
+    width: 140,
+    elevation: 8,
+    borderRadius: 10,
+    paddingVertical: 10,
+  },
+  locationButtonPressed: {
+    width: 140,
+    elevation: 8,
+    backgroundColor: "#ADFF2F",
+    borderRadius: 10,
+    paddingVertical: 10,
   },
 });
 

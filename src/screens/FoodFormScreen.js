@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import FoodForm from "../ui/FoodForm";
+
 export default class FoodFormScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     console.log(navigation);
@@ -23,14 +24,12 @@ export default class FoodFormScreen extends Component {
 
   componentDidMount() {
     const currentFood = this.props.navigation.getParam("food");
-    console.log(currentFood, "nutsonyachin");
     if (currentFood) {
       this.setState((prevState) => ({ food: (prevState.food = currentFood) }));
     }
   }
 
   onFoodUpdated = (food) => {
-    console.log(food, "foooooooooooooood");
     this.props.navigation.popToTop();
   };
 
@@ -50,7 +49,6 @@ export default class FoodFormScreen extends Component {
           subIngredients: [...prevState.food.subIngredients, ingredient],
         },
       }));
-      console.log(this.state.subIngredients, "batman hoohoho");
     }
   };
 

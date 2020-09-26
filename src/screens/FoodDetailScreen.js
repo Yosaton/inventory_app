@@ -14,8 +14,6 @@ import { deleteFood } from "../api/FoodsApi";
 class FoodDetailScreen extends Component {
   static navigationOptions = () => {
     return {
-      // headerTitleStyle: { alignSelf: "center" },
-      // {headerLayoutPreset: 'center'};
       title: "Food Details",
       headerTitleAlign: "center",
     };
@@ -23,9 +21,6 @@ class FoodDetailScreen extends Component {
 
   render() {
     const food = this.props.navigation.getParam("food");
-
-    console.log("ur mom's a bitch", food);
-
     const onFoodDeleted = this.props.navigation.getParam("foodDeletedCallback");
 
     console.log(food);
@@ -66,7 +61,6 @@ class FoodDetailScreen extends Component {
               }
             />
           </View>
-          {/* <ScrollView showsHorizontalScrollIndicator={false}> */}
           <Image
             style={styles.image}
             source={food.image && { uri: food.image }}

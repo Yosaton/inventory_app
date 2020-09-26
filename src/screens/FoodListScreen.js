@@ -65,7 +65,6 @@ class FoodList extends Component {
           renderItem={({ item, index }) => {
             return (
               <ListItem
-                // containerStyle={styles.listItem}
                 title={item.name}
                 subtitle={item.category}
                 subtitle={item.location}
