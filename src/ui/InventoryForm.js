@@ -14,7 +14,6 @@ import { uploadInventory } from "../api/InventoryApi";
 import MawImagePicker from "./MawImagePicker";
 
 const InventoryForm = (props) => {
-  console.log(props, "props in ur ass");
   setInventoryImage = (image) => {
     props.setFieldValue("imageUri", image.uri);
   };
