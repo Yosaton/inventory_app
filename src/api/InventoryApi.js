@@ -77,14 +77,11 @@ export async function getInventory(inventoryReceived) {
 export function uploadInventory(inventory, onInventoryUploaded, { updating }) {
   if (inventory.imageUri) {
     const fileExtension = inventory.imageUri.split(".").pop();
-    console.log(fileExtension, "file extensionnnnnnnnnnnnnnnnn");
     var uuid = require("random-uuid-v4");
     var uuidv4 = uuid();
     const fileName = `${uuidv4}.${fileExtension}`;
 
     var storageRef = firebase.storage().ref(`inventory/images/${fileName}`);
-    console.log(storageRef, "storageRefFFFFFFFFFFFFFFFFFF");
-
     fetch(inventory.imageUri)
       .then(function (response) {
         return response.blob();
@@ -123,7 +120,6 @@ export function uploadInventory(inventory, onInventoryUploaded, { updating }) {
   } else {
     // delete inventory.imageUri;
     console.log("skipping image uploaded");
-    console.log(updating, "updatinggggggggggggggggg");
     if (updating) {
       console.log("updating...");
       updateInventory(inventory, onInventoryUploaded);
@@ -135,7 +131,6 @@ export function uploadInventory(inventory, onInventoryUploaded, { updating }) {
 }
 
 export function addInventory(inventory, addComplete) {
-  console.log(inventory, "bahahahahahahahHAHAHAHAHAH");
   inventory.createdAt = firebase.firestore.FieldValue.serverTimestamp();
   firebase
     .firestore()

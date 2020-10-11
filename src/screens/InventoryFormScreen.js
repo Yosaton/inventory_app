@@ -24,7 +24,6 @@ export default class InventoryFormScreen extends Component {
 
   componentDidMount() {
     const currentInventory = this.props.navigation.getParam("inventory");
-    console.log(currentInventory, "nutsonyachin");
     if (currentInventory) {
       this.setState((prevState) => ({
         inventory: (prevState.inventory = currentInventory),

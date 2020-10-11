@@ -42,12 +42,9 @@ class InventoryList extends Component {
       inventoryList: [...prevState.inventoryList, inventory],
     }));
     this.props.navigation.popToTop();
-    inventory;
-    console.log("bit bugg", this.state.inventoryList);
   };
 
   onInventoryDeleted = () => {
-    console.log(this.state.selectedIndex, "selected INDEXXXXXXXX");
     const newInventoryList = [...this.state.inventoryList];
     newInventoryList.splice(this.state.selectedIndex, 1);
 
