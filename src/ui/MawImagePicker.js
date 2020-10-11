@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
-const CurryImagePicker = ({ image, onImagePicked }) => {
+const MawImagePicker = ({ image, onImagePicked }) => {
   const [selectedImage, setSelectedImage] = useState();
 
   useEffect(() => {
@@ -79,4 +79,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CurryImagePicker;
+export default MawImagePicker;

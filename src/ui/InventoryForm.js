@@ -8,53 +8,35 @@ import {
   TouchableOpacity,
   TouchableHighlight,
 } from "react-native";
-import GridList from "../ui/GridList";
+import GridList from "./GridList";
 import { withFormik } from "formik";
-import { addFood, updateFood, uploadFood } from "../api/FoodsApi";
-import CurryImagePicker from "../ui/CurryImagePicker";
+import { uploadInventory } from "../api/InventoryApi";
+import MawImagePicker from "./MawImagePicker";
 
-const FoodForm = (props) => {
+const InventoryForm = (props) => {
   console.log(props, "props in ur ass");
-  setFoodImage = (image) => {
-    console.log(image, "IMAGEEEEEEEEEEEEEEEEEEEEEEE");
-    console.log(props, "props-asshole");
+  setInventoryImage = (image) => {
     props.setFieldValue("imageUri", image.uri);
   };
 
   const [selectedLocation, setSelectedLocation] = useState(null);
-  const [ingredient, setIngredient] = useState(null);
 
   useEffect(() => {
     if (props.values.location) {
-      console.log("useEffectnutsack " + props.values.location);
       setSelectedLocation(props.values.location);
     }
   }, [props.values.location]);
 
   function selectionOnPress(location) {
-    console.log(location);
     setSelectedLocation(location);
-    console.log(selectedLocation, "selectedLocation");
   }
-
-  function blahFunction(subs) {
-    // const ballSack = props.values.subIngredients;
-    // props.values.subIngredients.clear();
-    console.log("fuck u", props.values);
-    // setIngredient(ballSack);
-    // setIngredient(null);
-    // setIngredient = "";
-    // setIngredient(props.values.subIngredients);
-  }
-
-  // value={props.values.subIngredients}
 
   return (
     <ScrollView showsHorizontalScrollIndicator={false}>
       <View style={styles.container}>
-        <CurryImagePicker
-          image={props.food.image}
-          onImagePicked={setFoodImage}
+        <MawImagePicker
+          image={props.inventory.image}
+          onImagePicked={setInventoryImage}
         />
         <TextInput
           value={props.values.name}
@@ -130,26 +112,23 @@ const FoodForm = (props) => {
 
         <View style={styles.row}>
           <TextInput
-            value={props.values.subIngredients}
-            // value={ingredient}
+            value={props.values.tags}
             style={styles.formInput}
             onChangeText={(text) => {
-              props.setSubIngredients(text);
+              props.setTags(text);
             }}
-            placeholder="Sub-ingredient"
+            placeholder="Tag (e.g. 'Spring, Christmas, etc')"
           />
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
-              props.submitSubIngredients();
-              // props.values.subIngredients.clear();
-              // blahFunction();
+              props.submitTags();
             }}
           >
             <Text style={styles.appButtonText}>Add</Text>
           </TouchableOpacity>
         </View>
-        <GridList style={styles.gridlist} items={props.food.subIngredients} />
+        <GridList style={styles.gridlist} items={props.inventory.tags} />
         <TouchableOpacity
           style={styles.button}
           onPress={() => props.handleSubmit()}
@@ -239,37 +218,27 @@ const styles = StyleSheet.create({
 });
 
 export default withFormik({
-  mapPropsToValues: ({ food }) => ({
-    name: food.name,
-    category: food.category,
-    boughtPrice: food.boughtPrice,
-    sellPrice: food.sellPrice,
-    location: food.location,
+  mapPropsToValues: ({ inventory }) => ({
+    name: inventory.name,
+    category: inventory.category,
+    boughtPrice: inventory.boughtPrice,
+    sellPrice: inventory.sellPrice,
+    location: inventory.location,
     imageUri: null,
   }),
   enableReinitialize: true,
   handleSubmit: (values, { props }) => {
-    console.log(
-      props,
-      "PROPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS"
-    );
-    values.subIngredients = props.food.subIngredients;
-    console.log(
-      values,
-      "VALSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS"
-    );
+    values.tags = props.inventory.tags;
 
-    console.log(props.food.id, "gizmo");
-
-    if (props.food.id) {
-      values.id = props.food.id;
-      values.createdAt = props.food.createdAt;
-      if (props.food.image) {
-        values.image = props.food.image;
+    if (props.inventory.id) {
+      values.id = props.inventory.id;
+      values.createdAt = props.inventory.createdAt;
+      if (props.inventory.image) {
+        values.image = props.inventory.image;
       }
-      uploadFood(values, props.onFoodUpdated, { updating: true });
+      uploadInventory(values, props.onInventoryUpdated, { updating: true });
     } else {
-      uploadFood(values, props.onFoodAdded, { updating: false });
+      uploadInventory(values, props.onInventoryAdded, { updating: false });
     }
   },
-})(FoodForm);
+})(InventoryForm);

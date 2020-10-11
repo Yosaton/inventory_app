@@ -36,57 +36,56 @@ export function signout(onSignedOut) {
     });
 }
 
-export function updateFood(food, updateComplete) {
-  food.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
-  console.log(food, "updating firebase food");
+export function updateInventory(inventory, updateComplete) {
+  inventory.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
+  console.log(inventory, "updating firebase inventory");
   firebase
     .firestore()
-    .collection("Foods")
-    .doc(food.id)
-    .set(food)
-    .then(() => updateComplete(food))
+    .collection("Inventory")
+    .doc(inventory.id)
+    .set(inventory)
+    .then(() => updateComplete(inventory))
     .catch((error) => console.log("error"));
 }
 
-export function deleteFood(food, deleteComplete) {
-  console.log(food);
+export function deleteInventory(inventory, deleteComplete) {
+  console.log(inventory);
   firebase
     .firestore()
-    .collection("Foods")
-    .doc(food.id)
+    .collection("Inventory")
+    .doc(inventory.id)
     .delete()
     .then(() => deleteComplete())
     .catch((err) => console.log("error"));
 }
 
-export async function getFoods(foodsReceived) {
-  var foodList = [];
+export async function getInventory(inventoryReceived) {
+  var inventoryList = [];
   var snapshot = await firebase
     .firestore()
-    .collection("Foods")
+    .collection("Inventory")
     .orderBy("createdAt")
     .get();
   snapshot.forEach((doc) => {
-    const foodItem = doc.data();
-    foodItem.id = doc.id;
-    foodList.push(foodItem);
+    const inventoryItem = doc.data();
+    inventoryItem.id = doc.id;
+    inventoryList.push(inventoryItem);
   });
-  foodsReceived(foodList);
+  inventoryReceived(inventoryList);
 }
 
-export function uploadFood(food, onFoodUploaded, { updating }) {
-  if (food.imageUri) {
-    const fileExtension = food.imageUri.split(".").pop();
+export function uploadInventory(inventory, onInventoryUploaded, { updating }) {
+  if (inventory.imageUri) {
+    const fileExtension = inventory.imageUri.split(".").pop();
     console.log(fileExtension, "file extensionnnnnnnnnnnnnnnnn");
     var uuid = require("random-uuid-v4");
     var uuidv4 = uuid();
     const fileName = `${uuidv4}.${fileExtension}`;
-    console.log(food.imageUri, "IM AM DA FOOOOOOOOOOOOOODS");
 
-    var storageRef = firebase.storage().ref(`foods/images/${fileName}`);
+    var storageRef = firebase.storage().ref(`inventory/images/${fileName}`);
     console.log(storageRef, "storageRefFFFFFFFFFFFFFFFFFF");
 
-    fetch(food.imageUri)
+    fetch(inventory.imageUri)
       .then(function (response) {
         return response.blob();
       })
@@ -107,45 +106,45 @@ export function uploadFood(food, onFoodUploaded, { updating }) {
           () => {
             storageRef.getDownloadURL().then((downloadUrl) => {
               console.log("File available at: " + downloadUrl);
-              food.image = downloadUrl;
-              delete food.imageUri;
+              inventory.image = downloadUrl;
+              delete inventory.imageUri;
 
               if (updating) {
                 console.log("Updating....");
-                updateFood(food, onFoodUploaded);
+                updateInventory(inventory, onInventoryUploaded);
               } else {
                 console.log("adding...");
-                addFood(food, onFoodUploaded);
+                addInventory(inventory, onInventoryUploaded);
               }
             });
           }
         );
       });
   } else {
-    // delete food.imageUri;
+    // delete inventory.imageUri;
     console.log("skipping image uploaded");
     console.log(updating, "updatinggggggggggggggggg");
     if (updating) {
       console.log("updating...");
-      updateFood(food, onFoodUploaded);
+      updateInventory(inventory, onInventoryUploaded);
     } else {
       console.log("adding...");
-      addFood(food, onFoodUploaded);
+      addInventory(inventory, onInventoryUploaded);
     }
   }
 }
 
-export function addFood(food, addComplete) {
-  console.log(food, "bahahahahahahahHAHAHAHAHAH");
-  food.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+export function addInventory(inventory, addComplete) {
+  console.log(inventory, "bahahahahahahahHAHAHAHAHAH");
+  inventory.createdAt = firebase.firestore.FieldValue.serverTimestamp();
   firebase
     .firestore()
-    .collection("Foods")
-    .add(food)
+    .collection("Inventory")
+    .add(inventory)
     .then((snapshot) => {
-      food.id = snapshot.id;
-      snapshot.set(food);
+      inventory.id = snapshot.id;
+      snapshot.set(inventory);
     })
-    .then(() => addComplete(food))
+    .then(() => addComplete(inventory))
     .catch((err) => console.log("error"));
 }

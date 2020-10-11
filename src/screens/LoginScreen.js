@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import AuthForm from "../ui/AuthForm";
-import { login, signup, subscribeToAuthChanges } from "../api/FoodsApi";
+import { login, signup, subscribeToAuthChanges } from "../api/InventoryApi";
 
 class LoginScreen extends Component {
   state = {

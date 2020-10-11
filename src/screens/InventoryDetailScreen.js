@@ -9,21 +9,23 @@ import {
   ScrollView,
 } from "react-native";
 import { Divider, Icon } from "react-native-elements";
-import { deleteFood } from "../api/FoodsApi";
+import { deleteInventory } from "../api/InventoryApi";
 
-class FoodDetailScreen extends Component {
+class InventoryDetailScreen extends Component {
   static navigationOptions = () => {
     return {
-      title: "Food Details",
+      title: "Craft Details",
       headerTitleAlign: "center",
     };
   };
 
   render() {
-    const food = this.props.navigation.getParam("food");
-    const onFoodDeleted = this.props.navigation.getParam("foodDeletedCallback");
+    const inventory = this.props.navigation.getParam("inventory");
+    const onInventoryDeleted = this.props.navigation.getParam(
+      "inventoryDeletedCallback"
+    );
 
-    console.log(food);
+    console.log(inventory);
     return (
       <ScrollView showsHorizontalScrollIndicator={false}>
         <View style={styles.container}>
@@ -33,8 +35,8 @@ class FoodDetailScreen extends Component {
               name="ios-create"
               type="ionicon"
               onPress={() =>
-                this.props.navigation.navigate("FoodForm", {
-                  food: food,
+                this.props.navigation.navigate("InventoryForm", {
+                  inventory: inventory,
                 })
               }
             />
@@ -52,7 +54,7 @@ class FoodDetailScreen extends Component {
                     {
                       text: "OK",
                       onPress: () => {
-                        deleteFood(food, onFoodDeleted);
+                        deleteInventory(inventory, onInventoryDeleted);
                       },
                     },
                   ],
@@ -63,24 +65,29 @@ class FoodDetailScreen extends Component {
           </View>
           <Image
             style={styles.image}
-            source={food.image && { uri: food.image }}
+            source={inventory.image && { uri: inventory.image }}
           />
 
-          <Text style={styles.headerText}>{food.name}</Text>
-          <Text style={styles.categoryText}>Category: {food.category}</Text>
+          <Text style={styles.headerText}>{inventory.name}</Text>
           <Text style={styles.categoryText}>
-            Price Bought: {food.boughtPrice}
+            Category: {inventory.category}
           </Text>
-          <Text style={styles.categoryText}>Sell Price: {food.sellPrice}</Text>
-          <Text style={styles.categoryText}>Location: {food.location}</Text>
+          <Text style={styles.categoryText}>
+            Price Bought: {inventory.boughtPrice}
+          </Text>
+          <Text style={styles.categoryText}>
+            Sell Price: {inventory.sellPrice}
+          </Text>
+          <Text style={styles.categoryText}>
+            Location: {inventory.location}
+          </Text>
 
-          <Text style={styles.ingredientText}>Ingredients</Text>
-          {food.subIngredients === undefined ||
-          food.subIngredients.length == 0 ? (
+          <Text style={styles.tagText}>Tags:</Text>
+          {inventory.tags === undefined || inventory.tags.length == 0 ? (
             <Text>None</Text>
           ) : (
             <FlatList
-              data={food.subIngredients}
+              data={inventory.tags}
               contentContainerStyle={styles.listContainer}
               ItemSeparatorComponent={() => (
                 <Divider style={{ backgroundColor: "black" }} />
@@ -88,7 +95,7 @@ class FoodDetailScreen extends Component {
               scrollEnabled={false}
               keyExtractor={(item, index) => index.toString()}
               renderItem={({ item }) => (
-                <Text style={styles.ingredientItemText}>{item}</Text>
+                <Text style={styles.tagItemText}>{item}</Text>
               )}
             />
           )}
@@ -121,12 +128,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 32,
   },
-  ingredientText: {
+  tagText: {
     fontStyle: "italic",
     fontSize: 18,
     marginBottom: 32,
   },
-  ingredientItemText: {
+  tagItemText: {
     fontSize: 16,
     alignSelf: "center",
     marginBottom: 16,
@@ -143,4 +150,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FoodDetailScreen;
+export default InventoryDetailScreen;

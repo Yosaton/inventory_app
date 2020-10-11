@@ -7,18 +7,18 @@ import {
   Text,
   Button,
 } from "react-native";
-import { getFoods, signout } from "../api/FoodsApi";
+import { getInventory, signout } from "../api/InventoryApi";
 import { ListItem, Divider } from "react-native-elements";
 import ActionButton from "react-native-action-button";
 
-class FoodList extends Component {
+class InventoryList extends Component {
   static navigationOptions = ({ navigation }) => {
     onSignedOut = () => {
       navigation.navigate("Auth");
     };
 
     return {
-      title: "Food List",
+      title: "Craft List",
       headerTitleStyle: { alignSelf: "center" },
       headerRight: (
         <Button
@@ -31,65 +31,60 @@ class FoodList extends Component {
     };
   };
 
-  // static navigationOptions = {
-  //   headerTitleStyle: { alignSelf: "center" },
-  //   title: "Center Title",
-  //   headerRight: <View />,
-  // };
-
   state = {
-    foodList: [],
+    inventoryList: [],
     selectedIndex: 0,
-    currentFoodItem: "",
+    currentInventoryItem: "",
   };
 
-  onFoodAdded = (food) => {
+  onInventoryAdded = (inventory) => {
     this.setState((prevState) => ({
-      foodList: [...prevState.foodList, food],
+      inventoryList: [...prevState.inventoryList, inventory],
     }));
     this.props.navigation.popToTop();
-    console.log("bit bugg", this.state.foodList);
+    inventory;
+    console.log("bit bugg", this.state.inventoryList);
   };
 
-  onFoodDeleted = () => {
+  onInventoryDeleted = () => {
     console.log(this.state.selectedIndex, "selected INDEXXXXXXXX");
-    const newFoodList = [...this.state.foodList];
-    newFoodList.splice(this.state.selectedIndex, 1);
+    const newInventoryList = [...this.state.inventoryList];
+    newInventoryList.splice(this.state.selectedIndex, 1);
 
     this.setState((prevState) => ({
-      foodList: (prevState.foodList = newFoodList),
+      inventoryList: (prevState.inventoryList = newInventoryList),
     }));
 
     this.props.navigation.popToTop();
   };
 
-  onFoodsReceived = (foodList) => {
-    console.log("on foods received", foodList);
+  onInventoryReceived = (inventoryList) => {
+    console.log("on inventory received", inventoryList);
     this.setState((prevState) => ({
-      foodList: (prevState.foodList = foodList),
+      inventoryList: (prevState.inventoryList = inventoryList),
     }));
   };
 
   componentDidMount() {
-    getFoods(this.onFoodsReceived);
+    getInventory(this.onInventoryReceived);
   }
 
   showActionButton = () => (
     <ActionButton
       buttonColor="blue"
       onPress={() =>
-        this.props.navigation.navigate("FoodForm", {
-          foodAddedCallback: this.onFoodAdded,
+        this.props.navigation.navigate("InventoryForm", {
+          inventoryAddedCallback: this.onInventoryAdded,
         })
       }
     />
   );
 
   render() {
-    return this.state.foodList.length > 0 ? (
+    return this.state.inventoryList.length > 0 ? (
       <SafeAreaView style={styles.container}>
         <FlatList
-          data={this.state.foodList}
+          data={this.state.inventoryList}
           ItemSeparatorComponent={() => (
             <Divider style={{ backgroundColor: "black" }} />
           )}
@@ -109,9 +104,9 @@ class FoodList extends Component {
                   this.setState((prevState) => ({
                     selectedIndex: (prevState.selectedIndex = index),
                   }));
-                  this.props.navigation.navigate("FoodDetail", {
-                    food: item,
-                    foodDeletedCallback: this.onFoodDeleted,
+                  this.props.navigation.navigate("InventoryDetail", {
+                    inventory: item,
+                    inventoryDeletedCallback: this.onInventoryDeleted,
                   });
                 }}
               />
@@ -121,15 +116,18 @@ class FoodList extends Component {
         <ActionButton
           buttonColor="blue"
           onPress={() =>
-            this.props.navigation.navigate("FoodForm", this.onFoodAdded)
+            this.props.navigation.navigate(
+              "InventoryForm",
+              this.onInventoryAdded
+            )
           }
         />
       </SafeAreaView>
     ) : (
       <View style={styles.textContainer}>
-        <Text style={styles.emptyTitle}>No Foods found</Text>
+        <Text style={styles.emptyTitle}>No Crafts found</Text>
         <Text style={styles.emptySubtitle}>
-          Add a new food using the + button below
+          Add a new craft using the + button below
         </Text>
         {this.showActionButton()}
       </View>
@@ -169,4 +167,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FoodList;
+export default InventoryList;
