@@ -1,10 +1,42 @@
 import React, { Component } from "react";
-import { StyleSheet, FlatList, SafeAreaView, View, Text } from "react-native";
-import { getFoods } from "../api/FoodsApi";
+import {
+  StyleSheet,
+  FlatList,
+  SafeAreaView,
+  View,
+  Text,
+  Button,
+} from "react-native";
+import { getFoods, signout } from "../api/FoodsApi";
 import { ListItem, Divider } from "react-native-elements";
 import ActionButton from "react-native-action-button";
 
 class FoodList extends Component {
+  static navigationOptions = ({ navigation }) => {
+    onSignedOut = () => {
+      navigation.navigate("Auth");
+    };
+
+    return {
+      title: "Food List",
+      headerTitleStyle: { alignSelf: "center" },
+      headerRight: (
+        <Button
+          color="#ffb300"
+          title="log out"
+          onPress={() => signout(onSignedOut)}
+        />
+      ),
+      headerLeft: <View />,
+    };
+  };
+
+  // static navigationOptions = {
+  //   headerTitleStyle: { alignSelf: "center" },
+  //   title: "Center Title",
+  //   headerRight: <View />,
+  // };
+
   state = {
     foodList: [],
     selectedIndex: 0,
@@ -108,6 +140,9 @@ class FoodList extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  logoutBtn: {
+    marginRight: 8,
   },
   listItem: {
     marginTop: 8,

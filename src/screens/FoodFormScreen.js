@@ -24,6 +24,7 @@ export default class FoodFormScreen extends Component {
 
   componentDidMount() {
     const currentFood = this.props.navigation.getParam("food");
+    console.log(currentFood, "nutsonyachin");
     if (currentFood) {
       this.setState((prevState) => ({ food: (prevState.food = currentFood) }));
     }
@@ -37,19 +38,6 @@ export default class FoodFormScreen extends Component {
     this.setState((prevState) => ({
       currentSubIngredient: (prevState.food.currentSubIngredient = text),
     }));
-  };
-
-  submitSubIngredients = () => {
-    let ingredient = this.state.currentSubIngredient;
-
-    if (ingredient && ingredient.length > 2) {
-      this.setState((prevState) => ({
-        food: {
-          ...prevState.food,
-          subIngredients: [...prevState.food.subIngredients, ingredient],
-        },
-      }));
-    }
   };
 
   submitSubIngredients = () => {

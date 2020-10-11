@@ -22,6 +22,7 @@ const FoodForm = (props) => {
   };
 
   const [selectedLocation, setSelectedLocation] = useState(null);
+  const [ingredient, setIngredient] = useState(null);
 
   useEffect(() => {
     if (props.values.location) {
@@ -35,6 +36,18 @@ const FoodForm = (props) => {
     setSelectedLocation(location);
     console.log(selectedLocation, "selectedLocation");
   }
+
+  function blahFunction(subs) {
+    // const ballSack = props.values.subIngredients;
+    // props.values.subIngredients.clear();
+    console.log("fuck u", props.values);
+    // setIngredient(ballSack);
+    // setIngredient(null);
+    // setIngredient = "";
+    // setIngredient(props.values.subIngredients);
+  }
+
+  // value={props.values.subIngredients}
 
   return (
     <ScrollView showsHorizontalScrollIndicator={false}>
@@ -118,6 +131,7 @@ const FoodForm = (props) => {
         <View style={styles.row}>
           <TextInput
             value={props.values.subIngredients}
+            // value={ingredient}
             style={styles.formInput}
             onChangeText={(text) => {
               props.setSubIngredients(text);
@@ -128,6 +142,8 @@ const FoodForm = (props) => {
             style={styles.button}
             onPress={() => {
               props.submitSubIngredients();
+              // props.values.subIngredients.clear();
+              // blahFunction();
             }}
           >
             <Text style={styles.appButtonText}>Add</Text>
