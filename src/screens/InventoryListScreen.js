@@ -38,6 +38,7 @@ class InventoryList extends Component {
   };
 
   onInventoryAdded = (inventory) => {
+    // console.log(this.props.navigation, "props check");
     this.setState((prevState) => ({
       inventoryList: [...prevState.inventoryList, inventory],
     }));
@@ -89,9 +90,8 @@ class InventoryList extends Component {
           renderItem={({ item, index }) => {
             return (
               <ListItem
-                title={item.name}
-                subtitle={item.category}
-                subtitle={item.location}
+                title={item.name === "" ? " " : item.name}
+                subtitle={item.location === "" ? " " : item.location}
                 leftAvatar={{
                   size: "large",
                   rounded: false,
@@ -110,15 +110,7 @@ class InventoryList extends Component {
             );
           }}
         />
-        <ActionButton
-          buttonColor="blue"
-          onPress={() =>
-            this.props.navigation.navigate(
-              "InventoryForm",
-              this.onInventoryAdded
-            )
-          }
-        />
+        {this.showActionButton()}
       </SafeAreaView>
     ) : (
       <View style={styles.textContainer}>
@@ -161,6 +153,10 @@ const styles = StyleSheet.create({
   emptySubtitle: {
     fontSize: 18,
     fontStyle: "italic",
+  },
+  avatar: {
+    // flex: 1,
+    marginRight: 8,
   },
 });
 

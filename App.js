@@ -62,6 +62,6 @@ const AppContainer = createAppContainer(
 
 export default class App extends Component {
   render() {
-    return <AppContainer screenProps={{ appName: "Coding with Curry" }} />;
+    return <AppContainer screenProps={{ appName: "Maw's App" }} />;
   }
 }

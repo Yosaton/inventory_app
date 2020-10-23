@@ -4,9 +4,9 @@
     "slug": "inventory_app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/face.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/face.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -21,6 +21,10 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "description": "Inventory app for maw",
+    "android": {
+      "package": "com.yosaton.inventory_app"
     }
   }
 }

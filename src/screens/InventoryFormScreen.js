@@ -60,7 +60,10 @@ export default class InventoryFormScreen extends Component {
         setTags={this.setCurrentTag}
         submitTags={this.submitTags}
         inventory={this.state.inventory}
-        onInventoryAdded={this.props.navigation.state.params}
+        // onInventoryAdded={this.props.navigation.state.params}
+        onInventoryAdded={this.props.navigation.getParam(
+          "inventoryAddedCallback"
+        )}
         onInventoryUpdated={this.onInventoryUpdated}
       />
     );
