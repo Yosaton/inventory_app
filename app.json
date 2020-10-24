@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "inventory_app",
-    "slug": "inventory_app",
+    "name": "Maws App",
+    "slug": "maws_app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/yos_face_icon.png",
@@ -24,7 +24,7 @@
     },
     "description": "Inventory app for maw",
     "android": {
-      "package": "com.yosaton.inventory_app"
+      "package": "com.yosaton.maws_app"
     }
   }
 }
