@@ -4,9 +4,9 @@
     "slug": "inventory_app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/face.png",
+    "icon": "./assets/yosface.png",
     "splash": {
-      "image": "./assets/face.png",
+      "image": "./assets/yosface.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
